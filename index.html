@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>TPA Standings</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>TPA Standings</h1>
+            <div class="options">
+                <button onclick="changeSection('TEAM')">TEAM</button>
+                <button onclick="changeSection('WOMENS DOUBLES')">WOMENS DOUBLES</button>
+                <button onclick="changeSection('MENS DOUBLES')">MENS DOUBLES</button>
+                <button onclick="changeSection('MIXED DOUBLES')">MIXED DOUBLES</button>
+            </div>
+        </div>
+
+        <ul id="rankingList" class="rankings">
+            <!-- Rankings will be dynamically added here -->
+        </ul>
+    </div>
+
+    <script>
+        function getRandomName(names) {
+            return names[Math.floor(Math.random() * names.length)];
+        }
+
+        function getRandomRating() {
+            return Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000;
+        }
+
+        function sortByRanking(data) {
+            return data.sort((a, b) => a.rating - b.rating);
+        }
+
+        const teamNames = ['Team1', 'Team2', 'Team3', 'Team4', 'Team5'];
+        const teamData = Array.from({ length: 50 }, (_, i) => ({
+            name: getRandomName(teamNames),
+            rating: getRandomRating(),
+            image: `https://via.placeholder.com/50?text=Team${i + 1}`
+        }));
+
+        const womensNames = ['Emma', 'Olivia', 'Ava', 'Sophia', 'Isabella'];
+        const womensDoublesData = Array.from({ length: 50 }, (_, i) => ({
+            name: getRandomName(womensNames),
+            rating: getRandomRating(),
+            image: `https://via.placeholder.com/50?text=Womens${i + 1}`
+        }));
+
+        const mensNames = ['Liam', 'Noah', 'Ethan', 'Mason', 'Lucas'];
+        const mensDoublesData = Array.from({ length: 50 }, (_, i) => ({
+            name: getRandomName(mensNames),
+            rating: getRandomRating(),
+            image: `https://via.placeholder.com/50?text=Mens${i + 1}`
+        }));
+
+        const mixedDoublesData = Array.from({ length: 50 }, (_, i) => ({
+            name: `${getRandomName(mensNames)} & ${getRandomName(womensNames)}`,
+            rating: getRandomRating(),
+            image: `https://via.placeholder.com/50?text=Mixed${i + 1}`
+        }));
+
+        function changeSection(section) {
+            currentSection = section;
+            renderRankings();
+        }
+
+        function renderRankings() {
+            const rankingList = document.getElementById('rankingList');
+            rankingList.innerHTML = '';
+
+            let rankingsData;
+
+            switch (currentSection) {
+                case 'TEAM':
+                    rankingsData = sortByRanking(teamData);
+                    break;
+                case 'WOMENS DOUBLES':
+                    rankingsData = sortByRanking(womensDoublesData);
+                    break;
+                case 'MENS DOUBLES':
+                    rankingsData = sortByRanking(mensDoublesData);
+                    break;
+                case 'MIXED DOUBLES':
+                    rankingsData = sortByRanking(mixedDoublesData);
+                    break;
+                default:
+                    rankingsData = sortByRanking(teamData);
+            }
+
+            for (let i = 0; i < rankingsData.length; i++) {
+                const player = rankingsData[i];
+                const listItem = document.createElement('li');
+                listItem.innerHTML = `
+                    <div class="player-info">
+                        <img src="${player.image}" alt="Player Image">
+                        <div class="info">
+                            <span class="name">${player.name}</span>
+                            <span class="ranking">#${i + 1}</span>
+                            <span class="rating">${player.rating} points</span>
+                        </div>
+                    </div>
+                `;
+                rankingList.appendChild(listItem);
+            }
+        }
+
+        let currentSection = 'TEAM';
+        renderRankings();
+    </script>
+</body>
+
+</html>
