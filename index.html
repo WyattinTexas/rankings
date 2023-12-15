@@ -9,15 +9,19 @@
 </head>
 
 <body>
+    <header class="header">
+        <img src="your-logo.png" alt="Your Logo" class="logo">
+        <h1>Round Robin Standings</h1>
+    </header>
+
     <div class="container">
-        <div class="header">
-            <h1>TPA Standings</h1>
-            <div class="options">
-                <button onclick="changeSection('TEAM')">TEAM</button>
-                <button onclick="changeSection('WOMENS DOUBLES')">WOMENS DOUBLES</button>
-                <button onclick="changeSection('MENS DOUBLES')">MENS DOUBLES</button>
-                <button onclick="changeSection('MIXED DOUBLES')">MIXED DOUBLES</button>
-            </div>
+        <div class="options">
+            <button onclick="changeSection('3.5')">3.5</button>
+            <button onclick="changeSection('4.0')">4.0</button>
+            <button onclick="sortBy('Wins')" data-sort="Wins">Sort by Wins</button>
+            <button onclick="sortBy('Losses')">Sort by Losses</button>
+            <button onclick="sortBy('Points')">Sort by Score</button>
+            <button onclick="sortBy('Ranking')">Sort by Ranking</button>
         </div>
 
         <ul id="rankingList" class="rankings">
@@ -26,44 +30,55 @@
     </div>
 
     <script>
-        function getRandomName(names) {
-            return names[Math.floor(Math.random() * names.length)];
-        }
+        const playerData = [
+            { Name: 'Shelly', Division: 3.5, Wins: 28, Losses: 0, Points: 308, 'Algorithm Points': 28.0308, Ranking: 1 },
+            { Name: 'John', Division: 3.5, Wins: 20, Losses: 8, Points: 244, 'Algorithm Points': 20.0244, Ranking: 2 },
+            { Name: 'Jon Mai', Division: 3.5, Wins: 16, Losses: 12, Points: 208, 'Algorithm Points': 16.0208, Ranking: 3 },
+            { Name: 'Elaine', Division: 3.5, Wins: 11, Losses: 3, Points: 137, 'Algorithm Points': 11.0137, Ranking: 4 },
+            { Name: 'Alejandro', Division: 3.5, Wins: 8, Losses: 20, Points: 100, 'Algorithm Points': 8.01, Ranking: 5 },
+            { Name: 'Bill', Division: 3.5, Wins: 5, Losses: 2, Points: 66, 'Algorithm Points': 5.0066, Ranking: 6 },
+            { Name: 'Adam', Division: 3.5, Wins: 4, Losses: 24, Points: 80, 'Algorithm Points': 4.008, Ranking: 7 },
+            { Name: 'Lisa Ackroyd', Division: 4.0, Wins: 28, Losses: 0, Points: 308, 'Algorithm Points': 28.0308, Ranking: 1 },
+            { Name: 'James', Division: 4.0, Wins: 24, Losses: 4, Points: 396, 'Algorithm Points': 24.0396, Ranking: 2 },
+            { Name: 'Rob Lowe', Division: 4.0, Wins: 24, Losses: 4, Points: 291, 'Algorithm Points': 24.0291, Ranking: 3 },
+            { Name: 'Asheligh Ackroyd', Division: 4.0, Wins: 20, Losses: 8, Points: 248, 'Algorithm Points': 20.0248, Ranking: 4 },
+            { Name: 'Anna', Division: 4.0, Wins: 16, Losses: 12, Points: 240, 'Algorithm Points': 16.024, Ranking: 5 },
+            { Name: 'Mike Ackroyd', Division: 4.0, Wins: 16, Losses: 12, Points: 240, 'Algorithm Points': 16.024, Ranking: 5 },
+            { Name: 'Nicole Lowe', Division: 4.0, Wins: 8, Losses: 20, Points: 140, 'Algorithm Points': 8.014, Ranking: 7 },
+            { Name: 'Bill', Division: 4.0, Wins: 6, Losses: 15, Points: 102, 'Algorithm Points': 6.0102, Ranking: 8 },
+            { Name: 'Mike Mills', Division: 4.0, Wins: 4, Losses: 24, Points: 133, 'Algorithm Points': 4.0133, Ranking: 9 },
+            { Name: 'Elaine', Division: 4.0, Wins: 4, Losses: 10, Points: 120, 'Algorithm Points': 4.012, Ranking: 10 },
+            // Include the rest of the player data...
+        ];
 
-        function getRandomRating() {
-            return Math.floor(Math.random() * (1500 - 1000 + 1)) + 1000;
-        }
+        let currentSection = '3.5';
+        let sortField = null;
+        let sortDirection = 'asc';
+
+        function sortBy(field) {
+    if (sortField === field) {
+        sortDirection = sortDirection === 'asc' ? 'desc' : 'asc';
+    } else {
+        sortField = field;
+        sortDirection = 'asc';
+    }
+
+    playerData.sort((a, b) => {
+        const aValue = a[sortField];
+        const bValue = b[sortField];
+
+        return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    });
+
+    renderRankings();
+}
+
+
+
 
         function sortByRanking(data) {
-            return data.sort((a, b) => a.rating - b.rating);
+            return data.sort((a, b) => a.Ranking - b.Ranking);
         }
-
-        const teamNames = ['Team1', 'Team2', 'Team3', 'Team4', 'Team5'];
-        const teamData = Array.from({ length: 50 }, (_, i) => ({
-            name: getRandomName(teamNames),
-            rating: getRandomRating(),
-            image: `https://via.placeholder.com/50?text=Team${i + 1}`
-        }));
-
-        const womensNames = ['Emma', 'Olivia', 'Ava', 'Sophia', 'Isabella'];
-        const womensDoublesData = Array.from({ length: 50 }, (_, i) => ({
-            name: getRandomName(womensNames),
-            rating: getRandomRating(),
-            image: `https://via.placeholder.com/50?text=Womens${i + 1}`
-        }));
-
-        const mensNames = ['Liam', 'Noah', 'Ethan', 'Mason', 'Lucas'];
-        const mensDoublesData = Array.from({ length: 50 }, (_, i) => ({
-            name: getRandomName(mensNames),
-            rating: getRandomRating(),
-            image: `https://via.placeholder.com/50?text=Mens${i + 1}`
-        }));
-
-        const mixedDoublesData = Array.from({ length: 50 }, (_, i) => ({
-            name: `${getRandomName(mensNames)} & ${getRandomName(womensNames)}`,
-            rating: getRandomRating(),
-            image: `https://via.placeholder.com/50?text=Mixed${i + 1}`
-        }));
 
         function changeSection(section) {
             currentSection = section;
@@ -77,40 +92,30 @@
             let rankingsData;
 
             switch (currentSection) {
-                case 'TEAM':
-                    rankingsData = sortByRanking(teamData);
+                case '3.5':
+                    rankingsData = sortByRanking(playerData.filter(player => player.Division === 3.5));
                     break;
-                case 'WOMENS DOUBLES':
-                    rankingsData = sortByRanking(womensDoublesData);
-                    break;
-                case 'MENS DOUBLES':
-                    rankingsData = sortByRanking(mensDoublesData);
-                    break;
-                case 'MIXED DOUBLES':
-                    rankingsData = sortByRanking(mixedDoublesData);
+                case '4.0':
+                    rankingsData = sortByRanking(playerData.filter(player => player.Division === 4.0));
                     break;
                 default:
-                    rankingsData = sortByRanking(teamData);
+                    rankingsData = sortByRanking(playerData);
             }
 
             for (let i = 0; i < rankingsData.length; i++) {
                 const player = rankingsData[i];
                 const listItem = document.createElement('li');
-                listItem.innerHTML = `
-                    <div class="player-info">
-                        <img src="${player.image}" alt="Player Image">
-                        <div class="info">
-                            <span class="name">${player.name}</span>
-                            <span class="ranking">#${i + 1}</span>
-                            <span class="rating">${player.rating} points</span>
-                        </div>
-                    </div>
-                `;
+
+                listItem.textContent = `#${player.Ranking} ${player.Name} - ${player.Points} points - Wins: ${player.Wins}, Losses: ${player.Losses}`;
+
                 rankingList.appendChild(listItem);
             }
         }
 
-        let currentSection = 'TEAM';
+        // Add event listener to the "Sort by Wins" button
+        const sortByWinsButton = document.querySelector('button[data-sort="Wins"]');
+        sortByWinsButton.addEventListener('click', () => sortBy('Wins'));
+
         renderRankings();
     </script>
 </body>

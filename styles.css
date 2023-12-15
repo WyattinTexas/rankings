@@ -7,21 +7,24 @@ body {
     color: #495057;
 }
 
+header {
+    background-color: #007bff;
+    color: #fff;
+    padding: 20px;
+    text-align: center;
+    border-radius: 0 0 10px 10px;
+}
+
+.logo {
+    width: auto; /* Adjust as needed */
+    height: 80px; /* Adjust as needed */
+    margin-right: 20px;
+}
+
 .container {
     max-width: 800px;
     margin: 20px auto;
     text-align: center;
-}
-
-.header {
-    background-color: #007bff;
-    color: #fff;
-    padding: 20px;
-    border-radius: 10px;
-}
-
-h1 {
-    color: #007bff;
 }
 
 .options {
@@ -67,13 +70,6 @@ button:hover {
 
 .rankings li:hover {
     transform: scale(1.05);
-}
-
-.player-info img {
-    border-radius: 50%;
-    margin-right: 20px;
-    width: 50px;
-    height: 50px;
 }
 
 .player-info .info {
